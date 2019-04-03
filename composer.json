@@ -1,0 +1,29 @@
+{
+    "name": "mmi/mmi-sentry",
+    "description": "MMi Sentry plugin",
+    "keywords": ["sentry", "mmi", "plugin"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mariusz Miłejko",
+            "email": "mariusz@milejko.pl"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "mmi/mmi": "~3.7",
+        "sentry/sdk": "2.0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "MmiSentry\\": "src/MmiSentry",
+            "": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
