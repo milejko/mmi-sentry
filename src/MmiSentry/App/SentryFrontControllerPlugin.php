@@ -21,7 +21,5 @@ class SentryFrontControllerPlugin extends \Mmi\App\FrontControllerPluginAbstract
      * @param \Mmi\Http\Request $request
      */
     public function preDispatch(\Mmi\Http\Request $request)
-    {
-        echo 'PRED';
-    }
+    { }
 }
