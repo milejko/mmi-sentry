@@ -27,4 +27,10 @@ class SentryConfig
      * @var boolean
      */
     public $enabled = true;
+
+    /**
+     * Nazwa środowiska
+     * @var string
+     */
+    public $environment;
 }

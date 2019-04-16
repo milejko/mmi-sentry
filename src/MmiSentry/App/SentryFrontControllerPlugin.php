@@ -10,6 +10,8 @@
 
 namespace MmiSentry\App;
 
+use Mmi\App\FrontController;
+
 /**
  * Mmi Sentry front controller plugin
  */
@@ -26,9 +28,9 @@ class SentryFrontControllerPlugin extends \Mmi\App\FrontControllerPluginAbstract
         //outside app context
         class_exists('\App\Registry') && isset(\App\Registry::$config) or die('Sentry plugin should be run in MMi application context');
         //configuration missing
-        isset(\App\Registry::$config->sentry) or die('Missing sentry configuration');
+        isset(\App\Registry::$config->sentry) or die('Missing Sentry configuration');
         //configuration class invalid
-        (\App\Registry::$config->sentry instanceof \MmiSentry\Config\SentryConfig) or die('Sentry configuration invalid, must be \MmiSentry\Config\SentryConfig');
+        (\App\Registry::$config->sentry instanceof \MmiSentry\Config\SentryConfig) or die('Sentry configuration invalid, must be instance of \MmiSentry\Config\SentryConfig');
         //getting configuration from the registry
         $this->_config = \App\Registry::$config->sentry;
     }
@@ -37,7 +39,7 @@ class SentryFrontControllerPlugin extends \Mmi\App\FrontControllerPluginAbstract
      * Przed uruchomieniem dispatchera
      * @param \Mmi\Http\Request $request
      */
-    public function preDispatch(\Mmi\Http\Request $request)
+    public function routeStartup(\Mmi\Http\Request $request)
     {
         //reporting not enabled
         if (!$this->_config->enabled) {
@@ -46,6 +48,8 @@ class SentryFrontControllerPlugin extends \Mmi\App\FrontControllerPluginAbstract
         //sentry initialization
         \Sentry\init([
             'dsn' => $this->_config->dsn,
+            //environment - configured, or guessed by config class name
+            'environment' => $this->_config->environment ? $this->_config->environment : substr(get_class(\App\Registry::$config), 10)
         ]);
         //adding user content
         $this->_addUserContext();
