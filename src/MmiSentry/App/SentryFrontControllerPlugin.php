@@ -2,7 +2,7 @@
 
 /**
  * Mmi Framework (https://github.com/milejko/mmi.git)
- * 
+ *
  * @link       https://github.com/milejko/mmi.git
  * @copyright  Copyright (c) 2010-2019 Mariusz Miłejko (http://milejko.com)
  * @license    http://milejko.com/new-bsd.txt New BSD License
@@ -77,14 +77,13 @@ class SentryFrontControllerPlugin extends \Mmi\App\FrontControllerPluginAbstract
                 return $event;
             },
         ]);
-        //adding user content
-        $this->_addUserContext();
     }
 
     /**
      * Adding user context
+     * @param \Mmi\Http\Request $request
      */
-    private function _addUserContext()
+    public function preDispatch(\Mmi\Http\Request $request)
     {
         //app has no auth object
         if (!isset(\App\Registry::$auth)) {
