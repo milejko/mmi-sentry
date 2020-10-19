@@ -13,7 +13,8 @@
         "php": ">=7.1.0",
         "mmi/mmi": "~3.7",
         "sentry/sdk": "2.0.2",
-        "sentry/sentry": "^2.1.1"
+        "sentry/sentry": "^2.1.1",
+        "guzzlehttp/psr7": "^1.7"
     },
     "autoload": {
         "psr-4": {
