@@ -14,7 +14,7 @@
         "mmi/mmi": "~3.7",
         "sentry/sdk": "2.0.2",
         "sentry/sentry": "^2.1.1",
-        "guzzlehttp/psr7": "^1.7"
+        "http-interop/http-factory-guzzle": "^1.0"
     },
     "autoload": {
         "psr-4": {
