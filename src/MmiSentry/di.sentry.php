@@ -1,6 +1,5 @@
 <?php
 
-use Mmi\Security\Auth;
 use Psr\Container\ContainerInterface;
 use Sentry\Event;
 use Sentry\State\Scope;
@@ -15,45 +14,48 @@ return [
     'sentry.ignore.exception'   => env('SENTRY_IGNORE.EXCEPTION', 'Mmi\Mvc\MvcNotFoundException'),
     'sentry.enabled'            => env('SENTRY_ENABLED', 0),
 
-    'sentry.loaded'     => function (ContainerInterface $container) {
+    'sentry.service' => function (ContainerInterface $container): bool {
         //sentry disabled
         if (!$container->get('sentry.enabled')) {
             return false;
         }
+        //defining ignored exceptions
+        define('SENTRY_IGNORED_EXCEPTIONS', explode(',', $container->get('sentry.ignore.exception')));
         //sentry initialization
         init([
             'dsn' => $container->get('sentry.dsn'),
             //environment - configured, or guessed by config class name
             'environment' => $container->get('sentry.environment'),
             //before send event
-            'before_send' => function (Event $event, ContainerInterface $container) {
+            'before_send' => function (Event $event) {
                 //iterate exceptions
                 foreach ($event->getExceptions() as $exception) {
                     //exception type on an ignored list
-                    if (in_array($exception['type'], explode(',', $container->get('sentry.ignore.exception')))) {
+                    if (in_array($exception['type'], SENTRY_IGNORED_EXCEPTIONS)) {
                         return;
                     }
                 }
                 return $event;
             },
         ]);
-        /** 
-         * @var Auth $auth
-         */
-        $auth = $container->get(Auth::class);
-        if (!$auth->hasIdentity()) {
-            return true;
+        //user scope
+        if (
+            isset($_SESSION['Auth']) && 
+            is_array($_SESSION['Auth']) && 
+            isset($_SESSION['Auth']['id']) &&
+            isset($_SESSION['Auth']['username']) &&
+            isset($_SESSION['Auth']['email'])
+        ) {
+            configureScope(function (Scope $scope): void {
+                //user scope
+                $scope->setUser([
+                    'id'            => $_SESSION['Auth']['id'],
+                    'email'         => $_SESSION['Auth']['email'],
+                    'username'      => $_SESSION['Auth']['username'],
+                    'ip_address'    => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
+                ], true);
+            });
         }
-        //configure scopes
-        configureScope(function (Scope $scope, Auth $auth): void {
-            die('auth');
-            //user scope
-            $scope->setUser([
-                'id' => $auth->getId(),
-                'email' => $auth->getEmail(),
-                'username' => $auth->getUsername(),
-            ]);
-        });
         return true;
-    }
+    },
 ];
