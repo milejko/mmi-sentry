@@ -31,7 +31,7 @@ return [
                 //iterate exceptions
                 foreach ($event->getExceptions() as $exception) {
                     //exception type on an ignored list
-                    if (in_array($exception['type'], SENTRY_IGNORED_EXCEPTIONS)) {
+                    if (in_array($exception->getType(), SENTRY_IGNORED_EXCEPTIONS)) {
                         return;
                     }
                 }
@@ -39,7 +39,7 @@ return [
             },
         ]);
         //user scope
-        if (
+        /*if (
             isset($_SESSION['Auth']) && 
             is_array($_SESSION['Auth']) && 
             isset($_SESSION['Auth']['id']) &&
@@ -55,7 +55,7 @@ return [
                     'ip_address'    => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
                 ], true);
             });
-        }
+        }*/
         return true;
     },
 ];
