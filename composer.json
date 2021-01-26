@@ -12,8 +12,7 @@
     "require": {
         "php": ">=7.4.0",
         "mmi/mmi": "4.*",
-        "sentry/sentry": "3.*",
-        "php-http/curl-client": "*"
+        "sentry/sdk": "3.*"
     },
     "autoload": {
         "psr-4": {
