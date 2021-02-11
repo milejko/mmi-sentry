@@ -2,7 +2,6 @@
 
 use Psr\Container\ContainerInterface;
 use Sentry\Event;
-use Sentry\UserDataBag;
 
 use function DI\env;
 use function Sentry\init;
