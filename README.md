@@ -9,3 +9,4 @@ Sentry plugin compatible with MMi/MMiCms 4.0+
 * SENTRY_DSN=https://your-account-id/sentry.io/your-channel-id
 * SENTRY_ENABLED=1
 * SENTRY_ENVIRONMENT=TEST
+* SENTRY_RELEASE=1.0

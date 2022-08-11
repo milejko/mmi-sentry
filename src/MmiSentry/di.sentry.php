@@ -11,6 +11,7 @@ return [
     'sentry.environment'        => env('SENTRY_ENVIRONMENT', 'LOCAL'),
     'sentry.ignore.exception'   => env('SENTRY_IGNORE.EXCEPTION', 'Mmi\Mvc\MvcNotFoundException,ErrorException'),
     'sentry.enabled'            => env('SENTRY_ENABLED', 0),
+    'sentry.release'            => env('SENTRY_RELEASE', ''),
 
     'sentry.service' => function (ContainerInterface $container): bool {
         //sentry disabled
@@ -22,6 +23,7 @@ return [
         //sentry initialization
         init([
             'dsn' => $container->get('sentry.dsn'),
+            'release' => $container->get('sentry.release'),
             //prevent quota issues
             'traces_sample_rate' => 1.0,
             //environment - configured, or guessed by config class name
