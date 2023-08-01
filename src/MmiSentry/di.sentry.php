@@ -9,7 +9,8 @@ use function Sentry\init;
 return [
     'sentry.dsn'                => env('SENTRY_DSN', ''),
     'sentry.environment'        => env('SENTRY_ENVIRONMENT', 'LOCAL'),
-    'sentry.ignore.exception'   => env('SENTRY_IGNORE.EXCEPTION', 'Mmi\Mvc\MvcNotFoundException,ErrorException'),
+    'sentry.ignore.exception'   => env('SENTRY_IGNORE_EXCEPTION', 'Mmi\Mvc\MvcNotFoundException,ErrorException'),
+    'sentry.ignore.code'        => env('SENTRY_IGNORE_CODE', ''),
     'sentry.enabled'            => env('SENTRY_ENABLED', 0),
     'sentry.release'            => env('SENTRY_RELEASE', ''),
 
@@ -18,8 +19,9 @@ return [
         if (!$container->get('sentry.enabled')) {
             return false;
         }
-        //defining ignored exceptions
+        //defining ignored
         define('SENTRY_IGNORED_EXCEPTIONS', explode(',', $container->get('sentry.ignore.exception')));
+        define('SENTRY_IGNORED_CODES', explode(',', $container->get('sentry.ignore.code')));
         //sentry initialization
         init([
             'dsn' => $container->get('sentry.dsn'),
@@ -34,7 +36,13 @@ return [
                 foreach ($event->getExceptions() as $exception) {
                     //exception type on an ignored list
                     if (in_array($exception->getType(), SENTRY_IGNORED_EXCEPTIONS)) {
-                        return;
+                        return null;
+                    }
+                    if (
+                        isset($exception->getMechanism()->getData()['code']) &&
+                        in_array($exception->getMechanism()->getData()['code'], SENTRY_IGNORED_CODES)
+                    ) {
+                        return null;
                     }
                 }
                 return $event;
