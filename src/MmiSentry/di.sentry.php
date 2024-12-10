@@ -9,7 +9,7 @@ use function Sentry\init;
 return [
     'sentry.dsn'                => env('SENTRY_DSN', ''),
     'sentry.environment'        => env('SENTRY_ENVIRONMENT', 'LOCAL'),
-    'sentry.ignore.exception'   => env('SENTRY_IGNORE_EXCEPTION', 'Mmi\Mvc\MvcNotFoundException,ErrorException'),
+    'sentry.ignore.exception'   => env('SENTRY_IGNORE_EXCEPTION', 'Mmi\Mvc\MvcNotFoundException,Mmi\Mvc\MvcForbiddenException,ErrorException'),
     'sentry.ignore.code'        => env('SENTRY_IGNORE_CODE', ''),
     'sentry.enabled'            => env('SENTRY_ENABLED', 0),
     'sentry.release'            => env('SENTRY_RELEASE', ''),
