@@ -10,9 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
-        "mmi/mmi": "4.*",
-        "sentry/sdk": "3.*"
+        "sentry/sdk": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -20,10 +18,14 @@
             "": "src/"
         }
     },
-    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "1.4-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     }
 }
